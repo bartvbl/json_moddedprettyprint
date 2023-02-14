@@ -18092,14 +18092,18 @@ class serializer
                     for (auto i = val.m_value.array->cbegin();
                             i != val.m_value.array->cend() - 1; ++i)
                     {
-                        o->write_characters(indent_string.c_str(), new_indent);
+                        if(i == val.m_value.array->cbegin()) {
+                            o->write_characters(indent_string.c_str(), new_indent);
+                        }
                         dump(*i, true, ensure_ascii, indent_step, new_indent);
-                        o->write_characters(",\n", 2);
+                        o->write_characters(",", 1);
                     }
 
                     // last element
                     JSON_ASSERT(!val.m_value.array->empty());
-                    o->write_characters(indent_string.c_str(), new_indent);
+                    if(val.m_value.array->cbegin() == val.m_value.array->cend()) {
+                        o->write_characters(indent_string.c_str(), new_indent);
+                    }
                     dump(val.m_value.array->back(), true, ensure_ascii, indent_step, new_indent);
 
                     o->write_character('\n');
