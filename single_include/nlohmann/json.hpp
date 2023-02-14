@@ -18092,7 +18092,8 @@ class serializer
                     for (auto i = val.m_value.array->cbegin();
                             i != val.m_value.array->cend() - 1; ++i)
                     {
-                        if(i == val.m_value.array->cbegin()) {
+                        const BasicJsonType& elementToProcess = *i;
+                        if(i == val.m_value.array->cbegin() || elementToProcess.m_type == value_t::object) {
                             o->write_characters(indent_string.c_str(), new_indent);
                         }
                         dump(*i, true, ensure_ascii, indent_step, new_indent);
@@ -18101,7 +18102,8 @@ class serializer
 
                     // last element
                     JSON_ASSERT(!val.m_value.array->empty());
-                    if(val.m_value.array->cbegin() == val.m_value.array->cend()) {
+                    const BasicJsonType& elementToProcess = val.m_value.array->back();
+                    if(val.m_value.array->cbegin() == val.m_value.array->cend() || elementToProcess.m_type == value_t::object) {
                         o->write_characters(indent_string.c_str(), new_indent);
                     }
                     dump(val.m_value.array->back(), true, ensure_ascii, indent_step, new_indent);
